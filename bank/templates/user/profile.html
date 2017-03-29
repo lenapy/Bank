@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+    <style type="text/css">
+   .block {
+    width: 200px;
+    background: #bcccb4;
+    padding: 5px;
+    padding-right: 20px;
+    margin-top: 100px;
+    border: solid 1px black;
+    float: left;
+   }
+    .block_1 {
+    width: 200px;
+    background: #fc0;
+    padding: 5px;
+    padding-right: 20px;
+    margin-top: 100px;
+    border: solid 1px black;
+    float: left;
+   }
+    .block_2 {
+    width: 200px;
+    background: #ffc5a4;
+    padding: 5px;
+    padding-right: 20px;
+    margin-left: 20px;
+    margin-top: 180px;
+    border: solid 1px black;
+    float: left;
+    position: absolute;
+   }
+      .card {
+    width: 200px;
+    background: #fffa3b;
+    padding: 5px;
+    padding-right: 20px;
+    margin-top: 5px;
+    border: solid 1px black;
+    float: left;
+    position: relative;
+   }
+   </style>
+    {% if form.errors %}
+        {{ form.errors }}}
+    {% endif %}
+    <div class="block">
+       <p><a href="{% url 'achievement:new' %}">Add achievement</a></p>
+    </div>
+    <div class="block_1">
+        <p><a href="{% url 'achievement:card_new' %}">Add Card</a></p>
+    </div>
+    <div class="block_2">
+        <h2>Your cards</h2>
+        {% for card in cards %}
+            <div class="card">
+                <h4>{{ card.name }}
+                <a class="btn btn-default" href="{% url 'achievement:card_edit' pk=card.pk %}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a></h4>
+            {% for  achievement in  achievements %}
+                {% if achievement.card == card %}
+                    <p>{{ achievement.name }}
+                        <a class="btn btn-default" href="{% url 'achievement:edit' pk=achievement.pk %}">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </a>
+                    </p>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}
+
+    </div>
+{%  endblock %}

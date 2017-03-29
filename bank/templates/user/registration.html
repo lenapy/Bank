@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if form.errors %}
+        {{ form.errors }}}
+    {% endif %}
+
+<link rel="stylesheet" type="text/css" href="../../static/login_register.css">
+<div class="container-fluid">
+	 <form action="" method="post" class="register-form">
+         {% csrf_token %}
+     <div class="row">
+       <div class="col-md-4 col-sm-4 col-lg-4">
+          <label for="firstName">LOGIN</label>
+           <input class="form-control" id="login" name="login" placeholder="Login" value="{{ form.login.value }}">
+       </div>
+     </div>
+      <div class="row">
+           <div class="col-md-4 col-sm-4 col-lg-4">
+              <label for="firstName">FIRST NAME</label>
+               <input class="form-control" id="username" name="username" placeholder="firs name" value="{{ form.username.value }}">
+           </div>
+      </div>
+      <div class="row">
+            <div class="col-md-4 col-sm-4 col-lg-4">
+               <label for="firstName">SECOND NAME</label>
+               <input class="form-control" id="surname" name="surname" placeholder="second name" value="{{ form.surname.value }}">
+            </div>
+      </div>
+     <div class="row">
+        <div class="col-md-4 col-sm-4 col-lg-4">
+           <label for="firstName">EMAIL</label>
+           <input class="form-control" id="email" name="email" placeholder="email" value="{{ form.email.value }}">
+        </div>
+    </div>
+      <div class="row">
+           <div class="col-md-4 col-sm-4 col-lg-4">
+              <label for="password">PASSWORD</label>
+               <input type="password" class="form-control" id="password" name="password" placeholder="Password" value="{{ form.password.value }}">
+           </div>
+      </div>
+      <hr>
+         <div class="row">
+           <div class="col-md-6 col-sm-6 col-xs-6 col-lg-6">
+           <button class="btn btn-default regbutton">Register</button>
+          </div>
+      </div>
+    </form>
+</div>
+{% endblock %}
+
