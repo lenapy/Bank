@@ -48,5 +48,40 @@ class PasswordChangeForm(forms.Form):
             return cleaned_data
 
 
+class ImageUploadForm(forms.Form):
+    image = forms.ImageField()
+
+    def clean(self):
+        cleaned_data = super().clean()
+        image = cleaned_data['image']
+        if image.size > 5242880:
+            raise forms.ValidationError('Размер файла не должен привышать 5 Мб')
+        return cleaned_data
 
 
+class UserEditForm(forms.Form):
+    username = forms.CharField(max_length=50)
+    surname = forms.CharField(max_length=50)
+    date_of_birth = forms.CharField(max_length=50, required=False)
+    phone_number = forms.IntegerField(required=False)
+    about_user = forms.CharField(widget=forms.Textarea, initial='', required=False)
+    email = forms.EmailField(required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data['username']
+        surname = cleaned_data['surname']
+        date_of_birth = cleaned_data['date_of_birth']
+        phone_number = cleaned_data['phone_number']
+        email = cleaned_data['email']
+        about_user = cleaned_data['about_user']
+        return cleaned_data
+
+
+class AddInfoAboutUser(forms.Form):
+    about_user = forms.CharField(widget=forms.Textarea, initial='', required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        about_user = cleaned_data['about_user']
+        return cleaned_data

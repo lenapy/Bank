@@ -1,9 +1,9 @@
 body{
-    background: #8999A8;
+    background-color: #f3f2fe;
 }
 
 .navbar, .dropdown-menu{
-background:rgba(255,255,255,0.25);
+background: rgba(181, 177, 254, 0.55);
 border: none;
 
 }
@@ -52,3 +52,4 @@ border: none;
     color: #fff;
     background: #fff;
 }
+

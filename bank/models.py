@@ -1,4 +1,3 @@
-from django.contrib import admin
 from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from datetime import datetime, timedelta
@@ -16,7 +15,7 @@ class User(AbstractBaseUser):
     about_user = models.TextField(null=True, blank=True)
     email = models.EmailField()
     password = models.CharField(max_length=50)
-    avatar = models.ImageField(upload_to='avatar/%Y/%m/%d/')
+    avatar = models.ImageField()
     level_points = models.IntegerField(null=True, blank=True)
 
     objects = UserManager()
@@ -31,23 +30,22 @@ class User(AbstractBaseUser):
         return self.username
 
     def get_full_name(self):
-        return '{} {}'.format(self.username, self.surname)
+        pass
 
     def get_short_name(self):
-        return self.username
+        pass
 
-    @property
-    def is_auth(self, request):
-        user_session = request['user-session']
-        session = Session.objects.filter(token=user_session).last()
-        if session:
-            return True
+    def get_url_avatar(self):
+        path = self.avatar.path
+        url = (path.partition('Bank/bank'))[2]
+        return url
 
 
 class Card(models.Model):
     name = models.CharField(max_length=50)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    color = models.CharField(max_length=6, null=True, blank=True)
+    color = models.CharField(max_length=7, null=True, blank=True)
+    update_data = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'card'
@@ -144,10 +142,3 @@ class Session(models.Model):
 
     class Meta:
         db_table = 'session'
-
-admin.site.register(User)
-admin.site.register(Card)
-admin.site.register(Achievement)
-admin.site.register(AchievementResource)
-admin.site.register(AchievementLabel)
-admin.site.register(Observer)

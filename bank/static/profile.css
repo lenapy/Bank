@@ -1,0 +1,217 @@
+body {
+    background-color: rgba(42, 75, 171, 0.07);
+}
+.container_flex{
+display: flex;
+flex-direction: row;
+    margin-top: 55px;
+    margin-bottom: 15px;
+    margin-left: 5px;
+    height: 100%;
+    width: 100%;
+    color: rgba(29, 35, 28, 0.97);
+
+
+}
+.block_user
+{
+  width: 300px;
+  height: 100%;
+  margin-left: 0;
+
+  text-align: center;
+}
+
+.block_cards {
+  width: 750px;
+  height: 700px;
+  margin-left: 2px;
+  margin-right: 2px;
+  margin-bottom: 20px;
+
+
+
+}
+.cards_container{
+    display: flex;
+    flex-wrap: wrap;
+    width: 750px;
+
+
+    position: relative;
+     border-width:1px;
+    border-color: rgb(179, 176, 254);
+    border-style: groove;
+    background: rgba(213, 255, 206, 0.16);
+    border-radius: 7px;
+
+
+
+}
+.cards_box{
+    width: 243px;
+    height: 100%;
+    margin-left: 5px;
+    margin-bottom: 5px;
+    margin-top: 3px;
+    background: #edd1e2;
+}
+
+.card {
+    position: relative;
+    text-align: center;
+}
+
+.achievement_in_card{
+    border-width:0px;
+    border-color: rgb(21, 23, 13);
+    border-style: groove;
+    background: rgba(213, 255, 206, 0.16);
+     border-radius: 0 10px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.shadow {
+
+    box-shadow: 0 0 10px rgba(0,0,0,0.5); /* Параметры тени */
+    padding: 10px;
+   }
+
+.edit
+{
+  float: right;
+  text-align: center;
+  font-size: 15px;
+  padding-bottom: 10px;
+    margin-right: 2px ;
+    position: static;
+    color: #5b80b2;
+
+}
+
+.edit_card {
+    text-align: center;
+    font-size: 15px;
+    padding-bottom: 10px;
+    margin-right: 2px;
+    position: static;
+    color: #15170d;
+    text-decoration:none;
+}
+
+.edit_card:hover{
+    text-decoration:none;
+     box-shadow: 0 0 6px rgba(0,0,0,0.5); /* Параметры тени */
+     padding: 5px;
+     border-radius: 0 10px;
+     color: #15170d;
+}
+.text {
+    text-align: left;
+    margin-left: 2px;
+    margin-right: 2px;
+    margin-bottom: 2px;
+    padding-right: 2px;
+}
+
+
+.block_resent_actions {
+  width: 220px;
+  height: 700px;
+  margin-left: 2px;
+  margin-right: 2px;
+
+}
+
+.pag-bar{
+    text-align: center;
+    margin-bottom: 3px;
+    margin-top: 40px;
+    margin-left: 350px;
+    position: relative;
+
+}
+
+.edit_button {
+    text-align: center;
+    font-size: 15px;
+    padding-bottom: 10px;
+    margin-right: 2px;
+    position: static;
+    color: #15170d;
+    background: #d1ecff;
+    text-decoration:none;
+    border-radius: 0 10px;
+    border-width:0px;
+    box-shadow: 0 0 8px rgba(59, 84, 254, 0.5); /* Параметры тени */
+
+}
+
+
+.edit_button:hover {
+    text-decoration: none;
+    box-shadow: 0 0 9px rgba(207, 18, 254, 0.5); /* Параметры тени */
+    padding: 5px;
+    color: #cf12fe;
+}
+.edit_button_new_ach{
+    text-align: center;
+    font-size: 15px;
+    padding-bottom: 10px;
+    margin-left: 16px;
+    margin-right: 2px ;
+    margin-bottom: 4px;
+    position: static;
+    color: #15170d;
+    background: #edd1e2;
+    text-decoration:none;
+    border-radius: 0 10px;
+    border-width:0px;
+    box-shadow: 0 0 8px rgba(207, 18, 254, 0.5); /* Параметры тени */
+}
+
+.edit_button_new_ach:hover {
+    text-decoration: none;
+    box-shadow: 0 0 9px rgba(16, 59, 254, 0.5); /* Параметры тени */
+    padding: 5px;
+}
+
+.edit_button_ach_ed{
+    float: right;
+    text-align: center;
+    font-size: 15px;
+    padding-bottom: 10px;
+    margin-left: 16px;
+    margin-right: 2px ;
+    margin-bottom: 4px;
+    position: static;
+    color: #15170d;
+    background: #edd1e2;
+    text-decoration:none;
+    border-radius: 0 10px;
+    border-width:0px;
+    box-shadow: 0 0 8px rgba(207, 18, 254, 0.5); /* Параметры тени */
+}
+
+.edit_button_ach_ed:hover {
+    text-decoration: none;
+    box-shadow: 0 0 9px rgba(16, 59, 254, 0.5); /* Параметры тени */
+    padding: 4px;
+}
+
+.table_decor{
+    border:1px solid grey;
+    border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+}
+
+.table_decor td {
+    border:1px solid grey;
+    border-collapse: collapse; /*убираем пустые промежутки между ячейками*/
+}
+
+.color_form {
+    margin-right:10px;
+    margin-left: 16px;
+}

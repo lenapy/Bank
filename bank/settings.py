@@ -14,7 +14,7 @@ import os
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -137,6 +137,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'bank/static')
-MEDIA_ROOT = os.path.join(BASE_DIR, 'bank/user_files')
-MEDIA_URL = '/user_files/'
+
+UPLOAD_IMAGE_PATH = os.path.join(BASE_DIR, 'Bank/bank/user_files/avatar')
+
