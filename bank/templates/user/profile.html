@@ -15,7 +15,7 @@
 
 </head>
 
-<body >
+<body>
 <div class="navbar-wrapper">
     <div class="container-fluid">
         <nav class="navbar navbar-fixed-top">
@@ -97,17 +97,13 @@
                 </div>
           </div>
 
-
-
-
-
     <div class="block_cards">
         <div class="cards_container">
             {% for card in cards%}
                 {% if '#' in card.color %}
-                <div class="cards_box" style="background-color: {{ card.color }}">
+                <div class="cards_box" data-object-id="{{ card.id }}" style="background-color: {{ card.color }}">
                 {% else %}
-                <div class="cards_box">
+                <div class="cards_box" data-object-id="{{ card.id }}">
                 {% endif %}
 
                     <div class="card">
@@ -205,8 +201,42 @@
     </div>
 
 </div>
-
+</div>
 </body>
+
+<script>
+
+    var hexDigits = new Array
+        ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
+
+    //Function to convert rgb color to hex format
+    function rgb2hex(rgb) {
+       rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+       return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+
+    function hex(x) {
+       return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+    }
+
+    $('.table_decor tbody tr td a div').click(function(e){
+        e.preventDefault(); // предотвратить стандартное поведение элемента (переход по ссылке)
+        var el = $(e.target); // элемент на который кликнули
+        var color = el.css('background-color'); // получить css-свойство элемента
+        var colorHex = rgb2hex(color); // чтобы получить на rgba, а #ff...
+
+        console.log(colorHex); // log to console (anything)
+        var cardsBox = el.parents('.cards_box'); // получить родителя данного элемента с опр классом
+        var cardId = cardsBox.attr("data-object-id"); // получить атрибут элемента
+
+        // AJAX
+        var url = "/achievement/" + cardId + "/card/color/" + encodeURIComponent(colorHex);
+
+        $.get(url);
+
+        cardsBox.css('background-color', colorHex); // установить css-свойство элементу
+    });
+</script>
 
 </html>
 

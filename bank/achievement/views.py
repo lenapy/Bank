@@ -33,9 +33,10 @@ def card_edit(request, pk):
 
 
 def add_color_to_card(request, pk, color):
-            card = Card.objects.filter(pk=pk)
-            card.update(color=color)
-            return redirect('user:profile')
+    card = Card.objects.filter(pk=pk)
+    card.update(color=color)
+    if request.method != 'POST':
+        return redirect('user:profile')
 
 
 def achievement_new(request):
