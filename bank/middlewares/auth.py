@@ -18,7 +18,7 @@ class Auth:
             request.user = session.user
             if not session:
                 return redirect('user:login')
-        except KeyError:
+        except (KeyError, AttributeError):
             return redirect('user:login')
         response = self.get_response(request)
         return response

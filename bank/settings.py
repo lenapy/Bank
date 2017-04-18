@@ -144,9 +144,6 @@ USE_TZ = True
 
 UPLOAD_IMAGE_PATH = os.path.join(BASE_DIR, 'Bank/bank/user_files/avatar')
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.9/howto/static-files/
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
