@@ -142,11 +142,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
-UPLOAD_IMAGE_PATH = os.path.join(BASE_DIR, 'Bank/bank/user_files/avatar')
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
-
+UPLOAD_IMAGE_PATH = os.path.join(PROJECT_ROOT, 'user_files/avatar')
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
