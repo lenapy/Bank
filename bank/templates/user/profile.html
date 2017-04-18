@@ -62,9 +62,11 @@
 
                 {% if user.id == request.user.id %}
               <p>
-
+                    {% if user.avatar %}
                     <img class="avatar" src= "{{ user.get_url_avatar }}" width="300" height="400" alt="{{ user.login }}" />
-
+                        {% else %}
+                    <img class="avatar" src= "" width="300" height="400" alt="{{ user.login }}" />
+                    {% endif %}
                       <form class="form-control_photo" action="{% url 'user:upload_photo' %}" method="post" enctype="multipart/form-data">
                           {% csrf_token %}
 
