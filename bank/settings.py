@@ -26,7 +26,10 @@ SECRET_KEY = '#*m66)=4aqp0raoqnhwbivi*z=ke++s*jz))ogyn#&=y&q$&y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'bank-php-academy.herokuapp.com',
+    '127.0.0.1'
+]
 
 
 # Application definition
