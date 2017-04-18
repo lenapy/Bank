@@ -1,0 +1,8 @@
+dj-database-url==0.4.2
+django==1.10.6
+postgres==2.2.1
+psycopg2==2.7
+Pillow==4.0.0
+jinja2==2.9.5
+gunicorn==19.6.0
+whitenoise==3.3.0
