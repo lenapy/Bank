@@ -1,0 +1,5 @@
+# Created by .ignore support plugin (hsz.mobi)
+.idea/
+pvenv/
+__pycache__/
+bank/user_files/

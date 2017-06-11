@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if form.errors %}
+        {{ form.errors }}}
+    {% endif %}
+
+
+		<!-- CSS style -->
+		<link rel="stylesheet" type="text/css" href="/static/login_register.css">
+        <link rel="stylesheet" type="text/css" href="/static/base.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+			<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+			<div class="container">
+			<div class="row main">
+				<div class="main-login main-center">
+
+					<form class="" method="post" action="">
+                        {% csrf_token %}
+
+
+                        <div class="form-group">
+							<label for="about_user" class="cols-sm-2 control-label">Tell about yourself</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                                    <textarea  class="form-control" name="about_user" id="about_user"  placeholder="Info" rows="10"></textarea>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group ">
+							<button class="btn btn-default regbutton">OK</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+{% endblock %}

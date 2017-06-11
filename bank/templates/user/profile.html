@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bank</title>
+   <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="/static/base.css">
+<link rel="stylesheet" type="text/css" href="/static/profile.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+
+<body>
+<div class="navbar-wrapper">
+    <div class="container-fluid">
+        <nav class="navbar navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Bank</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li class=""><a href="{% url 'index' %}">Home</a></li>
+
+                        <li class=""><a href="{% url 'user:profile' %}">Моя страничка</a></li>
+                        <li class=""><a href="{% url 'achievement:new' %}">Добавить достижение</a></li>
+                        <li class=""><a href="{% url 'achievement:card_new' %}">Создать новую карточку</a></li>
+                        <li class=""><a href="">Статистика</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav pull-right">
+                        <li class=" dropdown"><a href="#" class="dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Вы вошли как {{ user.login }} <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{% url 'user:change_password' %}">Изменить пароль</a></li>
+                                <li class=""><a href="{% url 'user:logout' %}">Выйти</a></li>
+                            </ul>
+{#                            <li class=""><a href="{% url 'user:login' %}">Войти</a></li>#}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+    </div>
+</div>
+
+
+<div class="container_flex">
+
+    <div class="block_user">
+        <div class="user_container">
+            {% for user in users %}
+
+                {% if user.id == request.user.id %}
+              <p>
+                    {% if user.avatar %}
+                    <img class="avatar" src= "{{ user.get_url_avatar }}" width="300" height="400" alt="{{ user.login }}" />
+                        {% else %}
+                    <img class="avatar" src= "" width="300" height="400" alt="{{ user.login }}" />
+                    {% endif %}
+                      <form class="form-control_photo" action="{% url 'user:upload_photo' %}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+
+                            <p>
+                                <input id="image" type="file" class="" name="image">
+                            </p>
+                            <button class="edit_button" type="submit">OK</button>
+                      </form>
+
+
+                {% endif %}
+            {% endfor %}
+                        <h5>{{ user.login }}</h5>
+                        <h5>{{ user.username}} {{ user.surname }}</h5>
+                        <h5>{{ user.date_of_birth}}</h5>
+                        {% if not user.phone_number == None %}
+                            <h5>{{ user.phone_number}}</h5>
+                        {% endif %}
+                        <h5>{{ user.email}}</h5>
+                        {% if not user.about_user == None %}
+                            <h5>{{ user.about_user}}</h5>
+                        {% else %}
+                            <h5>Добавить информацию о себе
+                                <a class="edit_card" href="{% url 'user:add_about' pk=request.user.id %}">+</a>
+                            </h5>
+                        {% endif %}
+                        <h5>
+                            <a class="edit_button" href="{% url 'user:edit' pk=request.user.id %}">Редактировать профиль</a>
+                        </h5>
+                </div>
+          </div>
+
+    <div class="block_cards">
+        <div class="cards_container">
+            {% for card in cards%}
+                {% if '#' in card.color %}
+                <div class="cards_box" data-object-id="{{ card.id }}" style="background-color: {{ card.color }}">
+                {% else %}
+                <div class="cards_box" data-object-id="{{ card.id }}">
+                {% endif %}
+
+                    <div class="card">
+
+                        <h5><a title = "Изменить карточку" class="edit_card" href="{% url 'achievement:card_edit' pk=card.pk %}">
+
+                            {{ card.name }}
+                        </a>
+
+                            <a title="Добавить новое достижение" href="{% url 'achievement:new'%}">
+                                <button class="edit_button_new_ach">+</button>
+                            </a>
+                        </h5>
+                        {% for achiev in achievements %}
+                            {% if achiev.card_id == card.id %}
+
+                                    <div class="achievement_in_card shadow">
+                                        {{ achiev.name }}
+                                        <a title = "Изменить достижение" class="edit_button_ach_ed" href="{% url 'achievement:edit' pk=achiev.pk %}">
+                                        Edit
+                                        </a><br>
+
+                                        <div class="text">  {{ achiev.text }} </div>
+                                    </div>
+
+
+
+                            {% endif %}
+                        {% endfor %}
+
+                    </div>
+                 <div>
+                     <form class="color_form" method="post">
+                         {% csrf_token %}
+                        <table class="table_decor">
+                            <tr>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#7673ff' %}><div style="background-color:#7673ff; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#62dae1' %}><div style="background-color:#62dae1; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#9be1e0' %}><div style="background-color:#9be1e0; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#94e1b7' %}><div style="background-color:#94e1b7; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#56e149' %}><div style="background-color:#56e149; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#92f02b' %}><div style="background-color:#92f02b; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#f9f20b' %}><div style="background-color:#f9f20b; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#fcae26' %}><div style="background-color:#fcae26; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#e1170c' %}><div style="background-color:#e1170c; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#e18787' %}><div style="background-color:#e18787; width: 20px; height: 20px;"></div></a></td>
+                            </tr>
+                            <tr>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#e185b1' %}><div style="background-color:#e185b1; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#fd148b' %}><div style="background-color:#fd148b; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#e1d0d1' %}><div style="background-color:#e1d0d1; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#dd30e1' %}><div style="background-color:#dd30e1; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#9a39e1' %}><div style="background-color:#9a39e1; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#f6dcff' %}><div style="background-color:#f6dcff; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#bfe1dd' %}><div style="background-color:#bfe1dd; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#dcffd8' %}><div style="background-color:#dcffd8; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#dce5ff' %}><div style="background-color:#dce5ff; width: 20px; height: 20px;"></div></a></td>
+                               <td><a href={% url 'achievement:add_color' pk=card.pk color='#feffd0' %}><div style="background-color:#feffd0; width: 20px; height: 20px;"></div></a></td>
+                            </tr>
+                        </table>
+                     </form>
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+              <div class="pag-bar">
+               <h5> {% if cards.has_previous %}
+                    <a href="?page={{ cards.previous_page_number }}">&laquo;</a>
+                    {% endif %}
+                    Page {{ cards.number }} of {{ cards.paginator.num_pages }}
+                    {% if cards.has_next %}
+                        <a href="?page={{ cards.next_page_number }}">&raquo;</a>
+                    {% endif %}
+               </h5>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="block_resent_actions">
+        {% for d in data %}
+
+            <div>
+
+                    {{ d.update_data }}<br>
+
+                    {{ d.name }}<br>
+                __________________________
+            </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+</div>
+</body>
+
+<script>
+
+    var hexDigits = new Array
+        ("0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f");
+
+    //Function to convert rgb color to hex format
+    function rgb2hex(rgb) {
+       rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+       return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
+
+    function hex(x) {
+       return isNaN(x) ? "00" : hexDigits[(x - x % 16) / 16] + hexDigits[x % 16];
+    }
+
+    $('.table_decor tbody tr td a div').click(function(e){
+        e.preventDefault(); // предотвратить стандартное поведение элемента (переход по ссылке)
+        var el = $(e.target); // элемент на который кликнули
+        var color = el.css('background-color'); // получить css-свойство элемента
+        var colorHex = rgb2hex(color); // чтобы получить на rgba, а #ff...
+
+        console.log(colorHex); // log to console (anything)
+        var cardsBox = el.parents('.cards_box'); // получить родителя данного элемента с опр классом
+        var cardId = cardsBox.attr("data-object-id"); // получить атрибут элемента
+
+        // AJAX
+        var url = "/achievement/" + cardId + "/card/color/" + encodeURIComponent(colorHex);
+
+        $.get(url);
+
+        cardsBox.css('background-color', colorHex); // установить css-свойство элементу
+    });
+</script>
+
+</html>
+

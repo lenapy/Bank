@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <!-- CSS style -->
+		<link rel="stylesheet" type="text/css" href="/static/login_register.css">
+        <link rel="stylesheet" type="text/css" href="/static/base.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+			<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+ <div class="container">
+			<div class="row main">
+				<div class="main-login main-center">
+				<h5>Добавьте новое достижение ;)</h5>
+                	<form class="" method="post" action="">
+                        {% csrf_token %}
+                        <div class="form-group">
+							<label for="card" class="cols-sm-2 control-label">Карточка</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                    <select name="card"  class="form-control"  id="card" >
+
+                                        {% for card in cards %}
+                                            {% if card.user_id == request.user.id %}
+                                            <option value="{{ card.id }}">{{ card.name }}</option>
+                                                    {% endif %}
+                                        {% endfor %}
+                                    </select>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">Название</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="name" id="name"
+                                           placeholder="Введите название достижения"
+                                           value="{{ form.name.value }}"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="text" class="cols-sm-2 control-label">Достижение</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+                            <textarea  class="form-control" name="text" id="text"
+                                       placeholder="Достижение" rows="15">{{ form.text.value }}</textarea>
+								</div>
+							</div>
+						</div>
+						<div class="form-group ">
+							<button class="btn btn-default regbutton">OK</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+{% endblock %}

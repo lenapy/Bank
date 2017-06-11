@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if form.errors %}
+        {{ form.errors }}}
+    {% endif %}
+        	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+
+		<!-- CSS style -->
+		<link rel="stylesheet" type="text/css" href="../../static/login_register.css">
+        <link rel="stylesheet" type="text/css" href="../../static/base.css">
+
+		<!-- Website Font style -->
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
+			<!-- Google Fonts -->
+		<link href='https://fonts.googleapis.com/css?family=Passion+One' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Oxygen' rel='stylesheet' type='text/css'>
+			<div class="container">
+			<div class="row main">
+				<div class="main-login main-center">
+				<h5>Sign up once and be in the swim ;)</h5>
+					<form class="" method="post" action="">
+                        {% csrf_token %}
+
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">Your Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="username" id="username"  placeholder="Enter your name" value="{{ form.username.value }}"/>
+								</div>
+							</div>
+						</div>
+                        <div class="form-group">
+							<label for="surname" class="cols-sm-2 control-label">Your Second Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="surname" id="surname"  placeholder="Enter your second name" value="{{ form.surname.value }}"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="email" class="cols-sm-2 control-label">Your Email</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="email" id="email"  placeholder="Enter your email" value="{{ form.email.value }}"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">Login</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="login" id="login"  placeholder="Enter your login" value="{{ form.login.value }}"/>
+								</div>
+							</div>
+						</div>
+
+						<div class="form-group">
+							<label for="password" class="cols-sm-2 control-label">Password</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock fa-lg" aria-hidden="true"></i></span>
+									<input type="password" class="form-control" name="password" id="password"  placeholder="Enter your password" value="{{ form.password.value }}">
+								</div>
+							</div>
+						</div>
+						<div class="form-group ">
+							<button class="btn btn-default regbutton">Register</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
+		</div>
+
+
+
+{% endblock %}
+
