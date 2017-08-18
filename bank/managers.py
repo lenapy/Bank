@@ -45,4 +45,20 @@ class UserManager(models.Manager):
         user.update(about_user=info)
 
 
+class BlogManager(models.Manager):
+    def crate_new_post(self, name, post, user):
+        post = self.create(name=name,
+                           post=post,
+                           user_id=user)
+        post.save()
+        return post.pk
+
+    def edit_post(self, post, name, text):
+        post.name = name
+        post.post = text
+        post.save()
+
+    def delete_post(self, post_id):
+        post = self.get(pk=post_id)
+        post.delete()
 

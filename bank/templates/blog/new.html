@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>New post</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+    <form class="" method="post" action="">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="post" class="cols-sm-2 control-label">Post</label>
+            <div class="cols-sm-10">
+                <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                    <input type="text" class="form-control" name="name" id="name"
+                           placeholder="Enter title of the post" value="{{ form.name.value }}">
+                    <textarea  class="form-control" name="post" id="new_post"
+                               placeholder="Enter your thoughts" rows="30"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="form-group ">
+            <button class="btn btn-default regbutton">Save</button>
+        </div>
+    </form>
+
+</body>
+</html>

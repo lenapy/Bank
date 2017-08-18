@@ -2,8 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from datetime import datetime, timedelta
 
-
-from bank.managers import UserManager
+from bank.managers import UserManager, BlogManager
 
 
 class User(AbstractBaseUser):
@@ -142,3 +141,15 @@ class Session(models.Model):
 
     class Meta:
         db_table = 'session'
+
+
+class Blog(models.Model):
+    user = models.ForeignKey(User)
+    post = models.TextField()
+    name = models.CharField(max_length=50)
+    date = models.DateTimeField(auto_now=True)
+
+    objects = BlogManager()
+
+    class Meta:
+        db_table = 'blog'

@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'bank.user',
     'bank',
     'bank.achievement',
-
-
+    'bank.blog',
 ]
 
 MIDDLEWARE = [
