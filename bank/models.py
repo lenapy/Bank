@@ -2,7 +2,7 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from datetime import datetime, timedelta
 
-from bank.managers import UserManager, BlogManager
+from bank.managers import UserManager, BlogManager, CommentManager
 
 
 class User(AbstractBaseUser):
@@ -147,9 +147,25 @@ class Blog(models.Model):
     user = models.ForeignKey(User)
     post = models.TextField()
     name = models.CharField(max_length=50)
-    date = models.DateTimeField(auto_now=True)
+    create_date = models.DateTimeField(auto_now_add=True)
+    edit_date = models.DateTimeField(auto_now=True)
 
     objects = BlogManager()
 
     class Meta:
         db_table = 'blog'
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
+    text = models.TextField()
+    date = models.DateTimeField(auto_now=True)
+
+    objects = CommentManager()
+
+    class Meta:
+        db_table = 'comment'
+
+

@@ -14,3 +14,15 @@ class BlogFormPost(forms.Form):
         # if Blog.objects.filter(name=name).first():
         #     raise forms.ValidationError('Such title as %s already exist' % name)
         return cleaned_data
+
+
+class CommentFormPost(forms.Form):
+    text = forms.CharField(widget=forms.Textarea, initial='')
+
+    def text_clean(self):
+        cleaned_data = super().clean()
+        text = cleaned_data['text']
+        if text:
+            return cleaned_data
+        else:
+            raise forms.ValidationError('Пустой комментарий')

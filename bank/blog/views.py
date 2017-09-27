@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 
-from bank.blog.forms import BlogFormPost
-from bank.models import Blog
+from bank.blog.forms import BlogFormPost, CommentFormPost
+from bank.models import Blog, Comment
 
 
 def blog_new(request):
@@ -48,3 +48,24 @@ def blog_del(request, pk):
 def blog_all(request):
     posts = Blog.objects.filter(user_id=request.user.id)
     return render(request, 'blog/all.html', context={'posts': posts})
+
+
+def comment_new(request, pk):
+    blog_post = Blog.objects.filter(pk=pk).first()
+    if request.method == 'POST':
+        form = CommentFormPost(data=request.POST)
+        if form.is_valid():
+            if not Comment.objects.crate_new_comment(
+                    text=form.cleaned_data['text'],
+                    user=request.user.id,
+                    post=blog_post.id):
+                    return JsonResponse({'result': False, 'errors': form.errors})
+            return redirect('blog:all')
+    else:
+        form = CommentFormPost()
+    return render(request, 'blog/all.html', context={'form': form})
+
+
+def comments_show(request):
+    comments = Comment.objects.all()
+    return render(request, 'blog/all.html', context={'comments': comments})

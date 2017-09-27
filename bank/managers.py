@@ -62,3 +62,9 @@ class BlogManager(models.Manager):
         post = self.get(pk=post_id)
         post.delete()
 
+
+class CommentManager(models.Manager):
+    def crate_new_comment(self, text, user, post):
+        comment = self.create(text=text, user_id=user, post_id=post)
+        comment.save()
+        return comment.pk
