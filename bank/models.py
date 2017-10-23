@@ -147,8 +147,8 @@ class Blog(models.Model):
     user = models.ForeignKey(User)
     post = models.TextField()
     name = models.CharField(max_length=50)
-    create_date = models.DateTimeField(auto_now_add=True)
     edit_date = models.DateTimeField(auto_now=True)
+    create_date = models.DateTimeField(auto_now_add=True)
 
     objects = BlogManager()
 
@@ -157,7 +157,7 @@ class Blog(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(Blog, on_delete=models.CASCADE)
+    post = models.ForeignKey(Blog, on_delete=models.CASCADE, null=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, null=True)
     text = models.TextField()

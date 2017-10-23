@@ -12,9 +12,6 @@
 <body>
     <br>
     <a href="{% url 'blog:new' %}"><button>New post</button></a>
-    <div class="posts">
-
-    </div>
     <br>
     {% for post in posts %}
         <div class="posts" data-object-id="{{ post.id }}">
@@ -27,17 +24,15 @@
             <p>
                 Was created: {{ post.create_date }}
             </p>
+            {% if post.create_date.time|time:"H:i" != post.edit_date.time|time:"H:i"  %}
             <p>
                 Was edited: {{ post.edit_date }}
             </p>
-             <p>
-                Comments: {{ comments }}
-            </p>
+            {% endif %}
             <a href="{% url 'blog:edit' pk=post.pk %}"><button>Edit post</button></a>
             <a href="{% url 'blog:del' pk=post.pk %}">
                 <button class="del_post" data-object-id="{{ post.id }}">Delete post</button></a>
             <br>
-{#            <div class="comment_div" data-object-id="{{ post.id }}">#}
             <a href="{%url 'blog:comment_new' pk=post.pk %}" class="add_comment">Комментарий
             <form method="post" action="" class="form" style="display: none">
                 {% csrf_token %}
@@ -60,10 +55,88 @@
                 </div>
             </form>
                 </a>
-{#                </div>#}
             <br>
         __________________________________
+
+        <div class="comments_div_Class">
+                 Comments:
+                 <br>
+                 {% for comment in comments %}
+                     {% if comment.post_id == post.id %}
+                         <div class ="comment_text_buttons">
+                             <p> {{ comment.username }}: {{comment.text }} at {{ comment.date }} </p>
+                             <a href="{% url 'blog:reply' pk_post=post.id pk_comment=comment.id %}" class="reply">Ответить на комм
+                         <form method="post" action="" class="form" style="display: none">
+                        {% csrf_token %}
+                            <div class="form-group">
+                                <label for="comment" class="cols-sm-2 control-label"></label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                        <textarea  class="form-control comment_new_text"
+                                                   placeholder="Комментировать" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-default regbutton comment_new_but"
+                                             data-object-id="{{ post.id }}"
+                                             data-object-parent_id="{{ comment.id }}">Send</button>
+                                    <button class="btn btn-default regbutton comment_new_but_hide">Hide</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </a>
+
+                     <a href="{% url 'blog:del_comment' pk=comment.id %}"
+                        data-object-comment-id="{{ comment.id }}" class="del_comment">Удалить</a>
+                     <br>
+
+                         </div>
+                         <div class="replies">
+                             {% for reply in replies %}
+                                 {% if reply.parent_id == comment.id or reply.parent_id == reply.id %}
+                                     <div class="comment_text_buttons">
+                                     <b> {{ reply.username }}: {{ reply.text }} at {{ comment.date }}</b>
+
+                         <a href="{% url 'blog:reply' pk_post=post.id pk_comment=reply.id %}"
+                            class="reply">Ответить на ответ
+                         <form method="post" action="" class="form" style="display: none">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="comment" class="cols-sm-2 control-label"></label>
+                                <div class="cols-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+                                        <textarea  class="form-control comment_new_text"
+                                                   placeholder="Комментировать" rows="2"></textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn btn-default regbutton comment_new_but"
+                                             data-object-id="{{ post.id }}"
+                                             data-object-parent_id="{{ comment.id }}">Send</button>
+                                    <button class="btn btn-default regbutton comment_new_but_hide">Hide</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </a>
+
+                     <a href="{% url 'blog:del_comment' pk=reply.id %}" class="del_comment"
+                        data-object-comment-id="{{ reply.id }}">Удалить</a></div>
+                                 {% endif %}
+                         {% endfor %}
+                         </div>
+
+
+                     {% endif %}
+                 {% endfor %}
+         __________________________________
         </div>
+
+        </div>
+
 
 
 
@@ -110,8 +183,64 @@
                     'post_id': postId,
                     'text': commentText
                 };
+
                 $.post(url, commentData, function(data){
+                    var divComments = document.createElement('div');
+                    divComments.className = "comment_text_buttons";
+                    var pDataComments = document.createElement('p');
+                    pDataComments.innerHTML = data.user_name + ':'  + data.text + 'at' + data.date;
+                    var aLinkToReply = document.createElement('a');
+                    aLinkToReply.className = "reply";
+                    aLinkToReply.innerHTML = "Ответить на комм";
+                    aLinkToReply.setAttribute('href', '/blog/' + data.post_id + '/reply-to/' + data.comment + '/');
+                    var aLinkToDelete = document.createElement('a');
+                    aLinkToDelete.className = "del_comment";
+                    aLinkToDelete.innerHTML = "Удалить";
+                    var urlToDel = '/blog/' + data.comment + '/del-comment/';
+                    aLinkToDelete.setAttribute('href', urlToDel);
+                    $(aLinkToDelete).click(function(e){
+                        e.preventDefault();
+                        $.get(urlToDel);
+                        $(divComments).hide()});
+
+                    divComments.appendChild(pDataComments);
+                    divComments.appendChild(aLinkToReply);
+                    divComments.appendChild(aLinkToDelete);
+
+{#
+                    var parentPlaceForComment = el.parents('.posts').find('.comments_div_Class')[0];
+                    console.log(parentPlaceForComment);
+                    parentPlaceForComment.appendChild(divComments);
                     console.log(data);
+                });
+                $('.form').hide();
+
+
+
+            });
+
+
+        });
+        $('.reply').click(function(e){
+            e.preventDefault();
+            var el = $(e.target);
+            var form = el.children('.form');
+            form.show();
+            var commentNewBut = form.find('.comment_new_but');
+            commentNewBut.click(function(e){
+                e.preventDefault();
+                var postId = commentNewBut.attr("data-object-id");
+                var parentId = commentNewBut.attr("data-object-parent_id");
+                var url = "/blog/" + postId + "/reply-to/" + parentId + "/";
+                var commentText = form.find('.comment_new_text').val();
+                var commentData = {
+                    'csrfmiddlewaretoken': '{{ csrf_token }}',
+                    'post_id': postId,
+                    'text': commentText,
+                    'parent_id':parentId
+                };
+                $.post(url, commentData, function(data){
+
                 });
                 $('.form').hide();
                 });
@@ -120,6 +249,17 @@
             e.preventDefault();
             $('.form').hide();
         });
+
+        $('.del_comment').click(function(e){
+            e.preventDefault();
+            var el = $(e.target);
+            var commentId = el.attr("data-object-comment-id");
+            var url = "/blog/" + commentId + "/del-comment/";
+            var commentText = el.parent('.comment_text_buttons');
+            $.get(url);
+            commentText.hide();}
+        );
+
     </script>
 
 </body>
