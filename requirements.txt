@@ -1,10 +1,10 @@
 postdj-database-url==0.4.2
-Django==1.10.6
+Django==1.11pip.6
 gunicorn==19.6.0
 Jinja2==2.9.5
 MarkupSafe==1.0
 olefile==0.44
-Pillow==4.0.0
+Pillow==4.3.0
 postgres==2.2.1
-psycopg2==2.7
-whitenoise==3.3.0
+psycopg2==2.7.3.2
+whitenoise==3.3.1
