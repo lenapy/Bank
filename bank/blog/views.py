@@ -108,13 +108,21 @@ def reply_to_comment(request, pk_post, pk_comment):
     if request.method == 'POST':
         form = CommentFormPost(data=request.POST)
         if form.is_valid():
-            if not Comment.objects.create_reply(
-                    text=form.cleaned_data['text'],
-                    user=request.user.id,
-                    post=blog_post.id,
-                    parent=parent.id):
+            reply_text = form.cleaned_data['text']
+            reply_user = request.user.id
+            reply_user_name = request.user.username
+            post_id = blog_post.id
+            parent_id = parent.id
+            new_reply = Comment.objects.create_reply(
+                    text=reply_text,
+                    user=reply_user,
+                    post=post_id,
+                    parent=parent_id)
+            if not new_reply:
                 return JsonResponse({'result': False, 'errors': form.errors})
-            return redirect('blog:all')
+            return JsonResponse({'result': True, 'text': reply_text,
+                                 'user': reply_user, 'post_id': post_id,
+                                 'comment': new_reply, 'user_name': reply_user_name})
     else:
         form = CommentFormPost()
     return render(request, 'blog/all.html', context={'form': form})

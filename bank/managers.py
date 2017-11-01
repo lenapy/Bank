@@ -67,12 +67,12 @@ class CommentManager(models.Manager):
     def create_new_comment(self, text, user, post):
         comment = self.create(text=text, user_id=user, post_id=post)
         comment.save()
-        return comment.pk
+        return comment.pk, comment.date
 
     def create_reply(self, text, user, post, parent):
         reply = self.create(text=text, user_id=user, post_id=post, parent_id=parent)
         reply.save()
-        return reply.pk
+        return reply.pk, reply.date
 
     def delete_comment(self, comment_id):
         comment = self.get(pk=comment_id)

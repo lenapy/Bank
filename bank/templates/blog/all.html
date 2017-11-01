@@ -64,7 +64,7 @@
                  {% for comment in comments %}
                      {% if comment.post_id == post.id %}
                          <div class ="comment_text_buttons">
-                             <p> {{ comment.username }}: {{comment.text }} at {{ comment.date|date:'d.m.Y H:i:s' }} </p>
+                             <p> {{ comment.username }}: {{comment.text }} at {{ comment.date|date:'d.m.Y H:i' }} </p>
                              <a href="{% url 'blog:reply' pk_post=post.id pk_comment=comment.id %}" class="reply">Ответить на комм
                          <form method="post" action="" class="form" style="display: none">
                         {% csrf_token %}
@@ -97,7 +97,7 @@
                              {% for reply in replies %}
                                  {% if reply.parent_id == comment.id or reply.parent_id == reply.id %}
                                      <div class="comment_text_buttons">
-                                     <b> {{ reply.username }}: {{ reply.text }} at {{ comment.date }}</b>
+                                     <b> {{ reply.username }}: {{ reply.text }} at {{ reply.date }}</b>
 
                          <a href="{% url 'blog:reply' pk_post=post.id pk_comment=reply.id %}"
                             class="reply">Ответить на ответ
@@ -142,6 +142,132 @@ __________________________________
 
     {% endfor %}
     <script>
+        function createForm(data, parent_elem) {
+
+                    var formToReply = document.createElement('form');
+                    formToReply.method = "post";
+                    var csrftoken = jQuery("[name=csrfmiddlewaretoken]").val();
+                    var csrfInputElem = document.createElement('input');
+                    csrfInputElem.type = 'hidden';
+                    csrfInputElem.name = 'csrfmiddlewaretoken';
+                    csrfInputElem.value = csrftoken;
+                    formToReply.appendChild(csrfInputElem);
+
+                    var divForFrom = document.createElement('div');
+                    divForFrom.className = "form-group";
+
+                    var labelForForm = document.createElement('label');
+                    labelForForm.className = "cols-sm-2 control-label";
+
+                    var spanForForm = document.createElement('span');
+                    spanForForm.className = "input-group-addon";
+
+                    var divForFromInner = document.createElement('div');
+                    divForFrom.className = "cols-sm-10";
+
+                    var divForFromInput = document.createElement('div');
+                    divForFrom.className = "input-group";
+
+                    var iForForm = document.createElement('i');
+                    iForForm.className = "fa fa-users fa";
+                    iForForm.setAttribute("aria-hidden", "true");
+
+                    var divForFromWithButtons = document.createElement('div');
+                    divForFrom.className = "form-group";
+
+                    var sendButton = document.createElement('button');
+                    sendButton.className = "btn btn-default regbutton comment_new_but";
+                    sendButton.innerHTML = "Send";
+                    sendButton.data_object_id= data.post_id;
+                    sendButton.data_object_parent_id= data.comment[0];
+
+
+                    var deleteButton = document.createElement('button');
+                    deleteButton.className = "btn btn-default regbutton comment_new_but_hide";
+                    deleteButton.innerHTML = "Hide";
+
+                    var textAreaForForm = document.createElement('textarea');
+                    textAreaForForm.className = "form-control comment_new_text";
+                    textAreaForForm.placeholder = "Комментировать";
+                    textAreaForForm.rows = 2;
+
+                    divForFrom.appendChild(labelForForm);
+                    spanForForm.appendChild(iForForm);
+                    divForFromInput.appendChild(spanForForm);
+                    divForFromInput.appendChild(textAreaForForm);
+                    divForFromInner.appendChild(divForFromInput);
+                    divForFrom.appendChild(divForFromInner);
+                    divForFromWithButtons.appendChild(sendButton);
+                    divForFromWithButtons.appendChild(deleteButton);
+                    formToReply.appendChild(divForFrom);
+                    formToReply.appendChild(divForFromWithButtons);
+
+                    parent_elem.appendChild(formToReply);
+
+                     $(sendButton).click(function(e){
+                        e.preventDefault();
+                        var el = $(e.target);
+                        var commentData = {
+                            'csrfmiddlewaretoken': '{{ csrf_token }}',
+                            'post_id': data.post_id,
+                            'text': $(textAreaForForm).val(),
+                            'parent_id': data.comment[0]
+                        };
+                        var urlToResp = "/blog/" + data.post_id + "/reply-to/" + data.comment[0] + "/";
+                        $.post(urlToResp, commentData, function(data){createComment(data, el)});
+
+                        $(formToReply).hide();
+
+                        $(deleteButton).click(function(e) {
+                            e.preventDefault();
+                            $(formToReply).hide();
+                        });
+                    });
+                }
+
+
+                function createComment(data, targetElement){
+                    var divComments = document.createElement('div');
+                    divComments.className = "comment_text_buttons";
+                    var pDataComments = document.createElement('p');
+                    var commentDateStr = data.comment[1];
+                    var commentDate = new Date(commentDateStr);
+                    commentDate.toLocaleDateString();
+                    pDataComments.innerHTML = data.user_name + ':'+' '+ data.text +' '+ 'at'+ ' ' + commentDate;
+
+                    var aLinkToReply = document.createElement('a');
+                    aLinkToReply.className = "reply";
+                    aLinkToReply.innerHTML = "Ответить на комм";
+                    aLinkToReply.href =  '/blog/' + data.post_id + '/reply-to/' + data.comment[0] + '/';
+
+                    var aLinkToDelete = document.createElement('a');
+                    aLinkToDelete.className = "del_comment";
+                    aLinkToDelete.innerHTML = "Удалить";
+
+                    var urlToDel = '/blog/' + data.comment[0] + '/del-comment/';
+                    aLinkToDelete.setAttribute('href', urlToDel);
+
+                    $(aLinkToDelete).click(function(e){
+                        e.preventDefault();
+                        $.get(urlToDel);
+                        $(divComments).hide()});
+
+                    $(aLinkToReply).click(function(e){
+                        e.preventDefault();
+                        createForm(data, divComments);
+                    });
+
+                    divComments.appendChild(pDataComments);
+                    divComments.appendChild(aLinkToReply);
+                    divComments.appendChild(aLinkToDelete);
+
+                    var parentPlaceForComment = targetElement.parents('.posts').find('.comments_div_Class')[0];
+                    console.log(parentPlaceForComment);
+                    parentPlaceForComment.appendChild(divComments);
+                    console.log(data);
+
+                }
+
         $('.del_post').click(function(e){
             e.preventDefault();
             var el = $(e.target);
@@ -183,48 +309,9 @@ __________________________________
                     'post_id': postId,
                     'text': commentText
                 };
-
-                $.post(url, commentData, function(data){
-                    var divComments = document.createElement('div');
-                    divComments.className = "comment_text_buttons";
-                    var pDataComments = document.createElement('p');
-                    var d = new Date();
-                    pDataComments.innerHTML = data.user_name + ':'+' '+ data.text +' '+ 'at'+ ' ' +
-                        d.toLocaleDateString() + ' '+ d.toLocaleTimeString();
-                    var aLinkToReply = document.createElement('a');
-                    aLinkToReply.className = "reply";
-                    aLinkToReply.innerHTML = "Ответить на комм";
-                    aLinkToReply.setAttribute('href', '/blog/' + data.post_id + '/reply-to/' + data.comment + '/');
-                    var aLinkToDelete = document.createElement('a');
-                    aLinkToDelete.className = "del_comment";
-                    aLinkToDelete.innerHTML = "Удалить";
-                    var urlToDel = '/blog/' + data.comment + '/del-comment/';
-                    aLinkToDelete.setAttribute('href', urlToDel);
-                    $(aLinkToDelete).click(function(e){
-                        e.preventDefault();
-                        $.get(urlToDel);
-                        $(divComments).hide()});
-
-                    divComments.appendChild(pDataComments);
-                    divComments.appendChild(aLinkToReply);
-                    divComments.appendChild(aLinkToDelete);
-
-<<<<<<< HEAD
-
-=======
->>>>>>> 500ea2a63bcf6ec0256774234647d801432a7472
-                    var parentPlaceForComment = el.parents('.posts').find('.comments_div_Class')[0];
-                    console.log(parentPlaceForComment);
-                    parentPlaceForComment.appendChild(divComments);
-                    console.log(data);
-                });
+                $.post(url, commentData, function (data){ createComment(data, el);});
                 $('.form').hide();
-
-
-
             });
-
-
         });
         $('.reply').click(function(e){
             e.preventDefault();
@@ -244,9 +331,7 @@ __________________________________
                     'text': commentText,
                     'parent_id':parentId
                 };
-                $.post(url, commentData, function(data){
-
-                });
+                $.post(url, commentData, function(data){createComment(data, el)});
                 $('.form').hide();
                 });
         });
